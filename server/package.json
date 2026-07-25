@@ -1,0 +1,29 @@
+{
+  "name": "finsiqx-server",
+  "version": "1.0.0",
+  "description": "FINSIQX API",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node index.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.102.0",
+    "axios": "^1.18.1",
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "csv-parse": "^6.2.1",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-rate-limit": "^8.5.2",
+    "helmet": "^7.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.4.1",
+    "multer": "^2.1.1",
+    "xlsx": "^0.18.5"
+  },
+  "_security_notes": {
+    "xlsx": "Known prototype pollution vulnerability (GHSA-4r6h-8v6p-xvw6, GHSA-5pgg-2g8v-p4x9). No upstream fix available. Mitigated by server-side file type validation, size limits, and Multer filtering. Required for Excel import feature.",
+    "tar": "Critical vulnerabilities via @mapbox/node-pre-gyp transitive dependency. No direct fix available without upstream resolution. Not exploitable in this context as tar extraction is not exposed to user input."
+  }
+}
