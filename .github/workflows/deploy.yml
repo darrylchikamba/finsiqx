@@ -1,0 +1,84 @@
+name: FINSIQX CI/CD Pipeline
+
+# ==============================================================================
+# ⚠️ GITHUB SECRETS REQUIRED
+# ==============================================================================
+# The 'deploy-backend' job requires a secret to trigger the Render deployment.
+#
+# Instructions:
+# 1. Go to your Render dashboard
+# 2. Select your Web Service
+# 3. Go to Settings -> Deploy Hook
+# 4. Copy the hook URL
+# 5. Go to your GitHub repository: Settings -> Secrets and variables -> Actions
+# 6. Click "New repository secret"
+# 7. Name: RENDER_DEPLOY_HOOK_URL
+# 8. Secret: paste the copied URL
+# 9. Click "Add secret"
+# ==============================================================================
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    name: Build & Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Server Dependencies
+        working-directory: ./server
+        run: npm install
+
+      - name: Run Server Health Check
+        working-directory: ./server
+        run: |
+          if [ ! -f "index.js" ]; then
+            echo "Error: server/index.js not found!"
+            exit 1
+          fi
+          if ! grep -q '"start"' package.json; then
+            echo "Error: start script not found in server/package.json!"
+            exit 1
+          fi
+          echo "Server health check passed."
+
+      - name: Install Client Dependencies
+        working-directory: ./client
+        run: npm install
+
+      - name: Build Client
+        working-directory: ./client
+        run: npm run build
+
+  deploy-backend:
+    name: Deploy Backend (Render)
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Trigger Render Deploy Hook
+        run: |
+          if [ -z "${{ secrets.RENDER_DEPLOY_HOOK_URL }}" ]; then
+            echo "Error: RENDER_DEPLOY_HOOK_URL secret is not set!"
+            echo "Please read the instructions at the top of this workflow file."
+            exit 1
+          fi
+          curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
+
+  deploy-frontend:
+    name: Deploy Frontend (Vercel)
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Confirm Vercel Auto-Deploy
+        run: |
+          echo "✅ Vercel deploys automatically on push to main — no action required."
