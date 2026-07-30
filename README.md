@@ -1,5 +1,10 @@
+<div align="center">
+
+<img src="client/src/assets/logo-inline-dark.svg" alt="FINSIQX" width="280px" />
+
 # FINSIQX
-Consumer Financial Intelligence Platform for the South African Market
+
+**Consumer Financial Intelligence Platform for the South African Market**
 
 ![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
@@ -8,6 +13,10 @@ Consumer Financial Intelligence Platform for the South African Market
 ![CI/CD](https://img.shields.io/badge/CI%2FCD-passing-success?style=for-the-badge)
 
 [Live Demo](https://finsiqx.vercel.app) | [GitHub Repository](https://github.com/darrylchikamba/finsiqx)
+
+</div>
+
+---
 
 ## OVERVIEW
 
